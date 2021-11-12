@@ -31,7 +31,7 @@
                   <div [hidden]="!newStudentForm.get('firstName')?.errors?.maxlength">
                     Max length allowed is {{newStudentForm.get('firstName')?.errors?.maxlength?.requiredLength}}
                   </div>
-                  <div [hidden]="!newStudentForm.get('firstName')?.errors?.maxlength">
+                  <div [hidden]="!newStudentForm.get('firstName')?.errors?.minlength">
                     Min length allowed is {{newStudentForm.get('firstName')?.errors?.minlength?.requiredLength}}
                   </div>
                   <div [hidden]="!newStudentForm.get('firstName')?.errors?.required">
@@ -57,7 +57,7 @@
                   <div [hidden]="!newStudentForm.get('lastName')?.errors?.maxlength">
                     Max length allowed is {{newStudentForm.get('lastName')?.errors?.maxlength?.requiredLength}}
                   </div>
-                  <div [hidden]="!newStudentForm.get('lastName')?.errors?.maxlength">
+                  <div [hidden]="!newStudentForm.get('lastName')?.errors?.minlength">
                     Min length allowed is {{newStudentForm.get('lastName')?.errors?.minlength?.requiredLength}}
                   </div>
                   <div [hidden]="!newStudentForm.get('lastName')?.errors?.required">
