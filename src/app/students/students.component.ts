@@ -18,6 +18,7 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit() {
     this.getStudents();
+    console.log(environment.url)
   }
   getStudents(sortBy="firstName") {
     this.http.get(environment.url + '/api/students?sortBy='+ sortBy)
