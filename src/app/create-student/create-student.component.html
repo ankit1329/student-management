@@ -112,8 +112,11 @@
     </div>
   </div>
 
-  <!-- 
-
+  {{newStudentForm.get('firstName')?.errors|json}}
+  {{newStudentForm.get('firstName')?.valid}}
+  {{newStudentForm.get('lastName')?.valid}}
+  {{newStudentForm.get('dob')?.valid}}
+  {{newStudentForm.get('percentage')?.valid}}
   <h3>Form Status</h3>
   <div>form : </div>{{newStudentForm.get('firstName')}}
   <div>valid : </div>{{newStudentForm.valid}}
@@ -126,5 +129,5 @@
   <div>enabled : </div>{{newStudentForm.enabled}}
 
   <h3>Form Value</h3>
-  {{newStudentForm.get('value') |json}} -->
+  {{newStudentForm.get('value') |json}}
 </div>

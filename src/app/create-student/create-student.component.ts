@@ -15,8 +15,8 @@ export class CreateStudentComponent implements OnInit {
   filePath: string = '';
   picData: any;
   newStudentForm: FormGroup = this.formBuilder.group({
-    firstName: ['', [Validators.required, Validators.minLength(10), Validators.pattern("^[a-zA-Z]+$")]],
-    lastName: ['', [Validators.required, Validators.maxLength(15), Validators.pattern("^[a-zA-Z]+$")]],
+    firstName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(20), Validators.pattern("^[a-zA-Z]+$")]],
+    lastName: ['', [Validators.required, Validators.minLength(2),Validators.maxLength(20), Validators.pattern("^[a-zA-Z]+$")]],
     dob: ['', [Validators.required]],
     percentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
   });
