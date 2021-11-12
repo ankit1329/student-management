@@ -1,0 +1,130 @@
+<div class="container" style="margin-top: 20px;">
+  <input id="file" name="file" accept=".jpg,.jpeg,.png" type="file" (change)="onFileChange($event)"
+    style="display: none;" placeholder="Upload a file..." />
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-body">
+          <div class="profile-pic">
+            <ngx-avatar *ngIf="fileUrl" title="Change Profile Picture" size="100" [src]="fileUrl" class="avatar-upload"
+              onclick="document.getElementById('file').click();"></ngx-avatar>
+            <img *ngIf="fileUrl" [src]="fileUrl" alt="" height="120px" style="border-radius: 50%;">
+            <ngx-avatar *ngIf="!fileUrl" title="Change Profile Picture" size="100"
+              [name]="newStudentForm.get('firstName')?.value || 'A'" class="avatar-upload"
+              onclick="document.getElementById('file').click();"></ngx-avatar>
+          </div>
+
+          <form #form [formGroup]="newStudentForm" (ngSubmit)="onSubmit()" novalidate>
+
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <div class="input-group">
+                <input id="firstName" class="form-control" formControlName="firstName" placeholder="First Name"
+                  name="firstname">
+              </div>
+              <div
+                *ngIf="!newStudentForm.get('firstName')?.valid && (newStudentForm.get('firstName')?.dirty ||newStudentForm.get('firstName')?.touched)">
+                <small style="color: red;">
+                  <div [hidden]="!newStudentForm.get('firstName')?.errors?.pattern">
+                    Only characters are allowed
+                  </div>
+                  <div [hidden]="!newStudentForm.get('firstName')?.errors?.maxLength">
+                    Max length allowed is {{newStudentForm.get('firstName')?.errors?.maxlength?.requiredLength}}
+                  </div>
+                  <div [hidden]="!newStudentForm.get('firstName')?.errors?.required">
+                    First Name is required
+                  </div>
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="dateOfBirth">Last Name</label>
+              <div class="input-group">
+                <input id="dateOfBirth" class="form-control" formControlName="lastName" placeholder="Last Name"
+                  name="lastname">
+              </div>
+              <div
+                *ngIf="!newStudentForm.get('lastName')?.valid && (newStudentForm.get('lastName')?.dirty ||newStudentForm.get('lastName')?.touched)">
+                <small style="color: red;">
+
+                  <div [hidden]="!newStudentForm.get('lastName')?.errors?.pattern">
+                    Only characters are allowed
+                  </div>
+                  <div [hidden]="!newStudentForm.get('lastName')?.errors?.maxLength">
+                    Max length allowed is {{newStudentForm.get('lastName')?.errors?.maxlength?.requiredLength}}
+                  </div>
+                  <div [hidden]="!newStudentForm.get('lastName')?.errors?.required">
+                    Last Name is required
+                  </div>
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="dateOfBirth">Date of birth</label>
+              <div class="input-group">
+                <input id="dateOfBirth" class="form-control" formControlName="dob" placeholder="yyyy-mm-dd" name="dp"
+                  ngbDatepicker #dp="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button">select</button>
+                </div>
+              </div>
+              <div
+                *ngIf="!newStudentForm.get('dob')?.valid && (newStudentForm.get('dob')?.dirty ||newStudentForm.get('dob')?.touched)">
+                <small style="color: red;">
+                  <div [hidden]="!newStudentForm.get('dob')?.errors?.required">
+                    Date of Birth is required
+                  </div>
+                </small>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="dateOfBirth">Percentage</label>
+              <div class="input-group">
+                <input id="dateOfBirth" type="number" class="form-control" formControlName="percentage"
+                  placeholder="Percentage" name="percentage">
+              </div>
+              <div
+                *ngIf="!newStudentForm.get('percentage')?.valid && (newStudentForm.get('percentage')?.dirty ||newStudentForm.get('percentage')?.touched)">
+                <small style="color: red;">
+                  <div [hidden]="!newStudentForm.get('percentage')?.errors?.min">
+                    Min allowed is 0%
+                  </div>
+                  <div [hidden]="!newStudentForm.get('percentage')?.errors?.max">
+                    Max allowed is 100%
+                  </div>
+                  <div [hidden]="!newStudentForm.get('percentage')?.errors?.required">
+                    Percentage is required
+                  </div>
+                </small>
+              </div>
+            </div>
+
+            <p>
+              <button type="submit" [disabled]="!newStudentForm.valid" class="btn btn-primary">Save</button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+
+  <h3>Form Status</h3>
+  <div>form : </div>{{newStudentForm.get('firstName')}}
+  <div>valid : </div>{{newStudentForm.valid}}
+  <div>invalid : </div>{{newStudentForm.invalid}}
+  <div>touched : </div>{{newStudentForm.touched}}
+  <div>untouched : </div>{{newStudentForm.untouched}}
+  <div>pristine : </div>{{newStudentForm.pristine}}
+  <div>dirty : </div>{{newStudentForm.dirty}}
+  <div>disabled : </div>{{newStudentForm.disabled}}
+  <div>enabled : </div>{{newStudentForm.enabled}}
+
+  <h3>Form Value</h3>
+  {{newStudentForm.get('value') |json}} -->
+</div>
