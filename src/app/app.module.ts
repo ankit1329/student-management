@@ -9,6 +9,9 @@ import { CreateStudentComponent } from './create-student/create-student.componen
 import { StudentsComponent } from './students/students.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule, AvatarSource } from 'ngx-avatar';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 const avatarSourcesOrder = [AvatarSource.CUSTOM, AvatarSource.INITIALS];
 
 @NgModule({
@@ -19,6 +22,7 @@ const avatarSourcesOrder = [AvatarSource.CUSTOM, AvatarSource.INITIALS];
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -30,7 +34,8 @@ const avatarSourcesOrder = [AvatarSource.CUSTOM, AvatarSource.INITIALS];
     NgbModalModule,
     AvatarModule.forRoot(
       { sourcePriorityOrder: avatarSourcesOrder }
-    )
+    ),
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

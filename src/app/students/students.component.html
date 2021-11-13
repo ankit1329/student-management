@@ -1,8 +1,19 @@
 <div class="container" style="margin-top: 20px;">
-    <div style="margin-bottom: 10px;">
-        <b>Sort By: </b> <a style="margin-left: 5px;" href="#" (click)="onSort('dob')">DOB</a>
-        <a style="margin-left: 5px;" href="#" (click)="onSort('percentage')">Percentage</a>
+    <div style="display: flex;margin-bottom: 10px;">
+        <div style="width: 75%;">
+            <button class="btn btn-sm btn-default" title="Add Student" (click)="open(content)">
+                <img src="assets/plus.png" height="60px">
+            </button>
+        </div>
+        <div style="width: 25%;">
+            <div class="float-right">
+                <b>Sort By: </b> <a style="margin-left: 5px;" href="#" (click)="onSort('dob')">DOB</a> &nbsp;|&nbsp;
+                <a style="margin-left: 5px;" href="#" (click)="onSort('percentage')">Percentage</a>
+            </div>
+        </div>
     </div>
+
+
 
     <table class="table table-striped" style="margin-top: 5px;">
         <thead>
@@ -15,8 +26,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let student of students">
+            <tr *ngFor="let student of students; let i = index;">
                 <td style="text-align:center">
+                    {{i}}
                     <ngx-avatar *ngIf="!student.avatarPath" [name]="student.firstName + ' ' +student.lastName">
                     </ngx-avatar>
                     <ngx-avatar *ngIf="student.avatarPath" [src]="host + student.avatarPath"></ngx-avatar>
@@ -25,9 +37,172 @@
                 <td>{{ student.lastName }}</td>
                 <td>{{ student.dob | date }}</td>
                 <td>{{ student.percentage | number }}</td>
-                <td> <button type="button" class="btn btn-danger" (click)="delete(student)">Delete</button>
+                <td>
+                    <button type="button" class="btn btn-default" (click)="edit(student);open(content);"><img
+                            src="assets/edit.png" height="25px"></button>
+                    &nbsp;
+                    <button type="button" class="btn btn-default" (click)="delete(student)"><img src="assets/delete.png"
+                            height="25px"></button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{inEditStudent? 'Edit' : 'Add'}} Student</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <input id="file" name="file" accept=".jpg,.jpeg,.png" type="file" (change)="onFileChange($event)"
+            style="display: none;" placeholder="Upload a file..." />
+
+        <div class="card" style="margin-top: 20px;">
+            <div class="card-body">
+                <div class="profile-pic page-hero d-flex align-items-center justify-content-center">
+                    <ngx-avatar *ngIf="fileUrl && !inEditStudent" title="Change Profile Picture" size="100"
+                        [src]="fileUrl" class="avatar-upload" onclick="document.getElementById('file').click();">
+                    </ngx-avatar>
+                    <img *ngIf="fileUrl && !inEditStudent" [src]="fileUrl" alt="" height="120px" width="120px"
+                        class="rounded-circle" onclick="document.getElementById('file').click();">
+                    <ngx-avatar *ngIf="!fileUrl && !inEditStudent" title="Change Profile Picture" size="100"
+                        [name]="newStudentForm.get('firstName')?.value || 'A'" class="avatar-upload"
+                        onclick="document.getElementById('file').click();"></ngx-avatar>
+                    <ngx-avatar *ngIf="!fileUrl && inEditStudent && inEditStudent.avatarPath" title="Change Profile Picture"
+                        size="100" class="avatar-upload" onclick="document.getElementById('file').click();"
+                        [src]="host + inEditStudent.avatarPath"></ngx-avatar>
+                    <ngx-avatar *ngIf="!fileUrl && inEditStudent && !inEditStudent.avatarPath" title="Change Profile Picture"
+                        size="100" [name]="newStudentForm.get('firstName')?.value || 'A'" class="avatar-upload"
+                        onclick="document.getElementById('file').click();"></ngx-avatar>
+                    <img *ngIf="fileUrl && inEditStudent" [src]="fileUrl" alt="" height="120px" width="120px"
+                        class="rounded-circle" onclick="document.getElementById('file').click();">
+
+
+                </div>
+                <div *ngIf="fileName" class="page-hero d-flex align-items-center justify-content-center"
+                    style="margin: 5px 0">
+                    {{fileName}}
+                </div>
+                <div class="page-hero d-flex align-items-center justify-content-center" style="margin: 5px 0">
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                        onclick="document.getElementById('file').click();">
+                        Select Profile Pic &nbsp;
+                        <span><img style="position: relative;top: -2px;" src="assets/upload.png" height="15px"
+                                alt=""></span>
+                    </button>
+                </div>
+
+                <form #form [formGroup]="newStudentForm" (ngSubmit)="onSubmit(modal)" novalidate>
+
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <div class="input-group">
+                            <input id="firstName" class="form-control" formControlName="firstName"
+                                placeholder="First Name" name="firstname">
+                        </div>
+                        <div
+                            *ngIf="!newStudentForm.get('firstName')?.valid && (newStudentForm.get('firstName')?.dirty ||newStudentForm.get('firstName')?.touched)">
+                            <small style="color: red;">
+                                <div [hidden]="!newStudentForm.get('firstName')?.errors?.pattern">
+                                    Only characters are allowed
+                                </div>
+                                <div [hidden]="!newStudentForm.get('firstName')?.errors?.maxlength">
+                                    Max length allowed is
+                                    {{newStudentForm.get('firstName')?.errors?.maxlength?.requiredLength}}
+                                </div>
+                                <div [hidden]="!newStudentForm.get('firstName')?.errors?.minlength">
+                                    Min length allowed is
+                                    {{newStudentForm.get('firstName')?.errors?.minlength?.requiredLength}}
+                                </div>
+                                <div [hidden]="!newStudentForm.get('firstName')?.errors?.required">
+                                    First Name is required
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Last Name</label>
+                        <div class="input-group">
+                            <input id="dateOfBirth" class="form-control" formControlName="lastName"
+                                placeholder="Last Name" name="lastname">
+                        </div>
+                        <div
+                            *ngIf="!newStudentForm.get('lastName')?.valid && (newStudentForm.get('lastName')?.dirty ||newStudentForm.get('lastName')?.touched)">
+                            <small style="color: red;">
+
+                                <div [hidden]="!newStudentForm.get('lastName')?.errors?.pattern">
+                                    Only characters are allowed
+                                </div>
+                                <div [hidden]="!newStudentForm.get('lastName')?.errors?.maxlength">
+                                    Max length allowed is
+                                    {{newStudentForm.get('lastName')?.errors?.maxlength?.requiredLength}}
+                                </div>
+                                <div [hidden]="!newStudentForm.get('lastName')?.errors?.minlength">
+                                    Min length allowed is
+                                    {{newStudentForm.get('lastName')?.errors?.minlength?.requiredLength}}
+                                </div>
+                                <div [hidden]="!newStudentForm.get('lastName')?.errors?.required">
+                                    Last Name is required
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of birth</label>
+                        <div class="input-group">
+                            <input id="dateOfBirth" class="form-control" formControlName="dob" placeholder="yyyy-mm-dd"
+                                name="dp" ngbDatepicker #dp="ngbDatepicker">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()"
+                                    type="button"><img src="assets/calendar.png" height="20px" alt=""></button>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="!newStudentForm.get('dob')?.valid && (newStudentForm.get('dob')?.dirty ||newStudentForm.get('dob')?.touched)">
+                            <small style="color: red;">
+                                <div [hidden]="!newStudentForm.get('dob')?.errors?.required">
+                                    Date of Birth is required
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Percentage</label>
+                        <div class="input-group">
+                            <input id="dateOfBirth" type="number" class="form-control" formControlName="percentage"
+                                placeholder="Percentage" name="percentage">
+                        </div>
+                        <div
+                            *ngIf="!newStudentForm.get('percentage')?.valid && (newStudentForm.get('percentage')?.dirty ||newStudentForm.get('percentage')?.touched)">
+                            <small style="color: red;">
+                                <div [hidden]="!newStudentForm.get('percentage')?.errors?.min">
+                                    Min allowed is 0%
+                                </div>
+                                <div [hidden]="!newStudentForm.get('percentage')?.errors?.max">
+                                    Max allowed is 100%
+                                </div>
+                                <div [hidden]="!newStudentForm.get('percentage')?.errors?.required">
+                                    Percentage is required
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+
+                    <p>
+                        <button type="submit" [disabled]="!newStudentForm.valid" class="btn btn-primary">{{inEditStudent
+                            ? 'Update': 'Create'}}</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
